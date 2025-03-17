@@ -3,7 +3,7 @@ class Xcresultparser < Formula
   homepage "https://github.com/a7ex/xcresultparser"
   version "1.8.5"
   url "https://github.com/a7ex/xcresultparser/archive/1.8.5.tar.gz"
-  sha256 "f46082063569a0ef0ef07668bb724705573fc06b34d7897041d92b7314123abe"
+  sha256 "47011cd0bb3ad217780274555af50fe38f03d8e9deb4fe03ed7a3c1e782deb59"
   license "MIT"
 
   depends_on xcode: ["10.0", :build]
