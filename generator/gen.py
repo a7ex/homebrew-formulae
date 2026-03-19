@@ -50,8 +50,11 @@ def generate_version_list(url):
   for release in response_object:
       if (release['prerelease']):
           continue
-      
-      versions_list.append((release['tag_name'], release))
+      tag = release['tag_name']
+      # Skip tags that aren't pure numeric versions (e.g. "2.0.0-beta")
+      if not all(part.isdigit() for part in tag.split('.')):
+          continue
+      versions_list.append((tag, release))
 
   versions_list = list(map(lambda s: ([int(u) for u in s[0].split('.')], s[1]), versions_list))
   versions_list.sort(reverse=True, key=lambda s: s[0])
@@ -88,7 +91,7 @@ def generate_formulae(user, repo, description, testing_section):
       if (release['prerelease']):
           continue
       
-      print(f'Tag: {release['tag_name']}')
+      print(f"Tag: {release['tag_name']}")
       version = release['tag_name']
       
       version_file_path = os.path.join(base_dir, f'../{repo.lower()}@{version}.rb')
@@ -97,7 +100,7 @@ def generate_formulae(user, repo, description, testing_section):
           continue
 
       filename = os.path.join(download_dir, f'{version}.tar.gz')
-      file_url = f'https://github.com/{user}/{repo}/archive/{release['tag_name']}.tar.gz'
+      file_url = f"https://github.com/{user}/{repo}/archive/{release['tag_name']}.tar.gz"
       print(f'\tfile_url: {file_url}')
       urllib.request.urlretrieve(file_url, filename)
       sha256 = sha256sum(filename)
