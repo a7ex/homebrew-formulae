@@ -5,8 +5,11 @@ import urllib.request
 from pathlib import Path
 
 def sha256sum(filename):
-    with open(filename, 'rb', buffering=0) as f:
-        return hashlib.file_digest(f, 'sha256').hexdigest()
+    sha256 = hashlib.sha256()
+    with open(filename, 'rb') as f:
+        for chunk in iter(lambda: f.read(8192), b''):
+            sha256.update(chunk)
+    return sha256.hexdigest()
 
 
 def generate_text(user, repo, description, version, sha256, testing_section, is_latest_version):
